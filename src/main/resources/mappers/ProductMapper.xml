@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.green.port.dao.ProductDAO">
+  <select id="selectProductList" resultType="kr.green.port.vo.ProductVO">
+  	select * from product
+  </select>
+  <select id="getProduct" resultType="kr.green.port.vo.ProductVO">
+  	select * from product where pr_code = #{pr_code}
+  </select>
+  <select id="getOption" resultType="kr.green.port.vo.OptionVO">
+  	select * from `option` where op_pr_code = #{pr_code}
+  </select>
+  <select id="getProductList2" resultType="kr.green.port.vo.ProductVO">
+  	select pr_code,pr_name,pr_img,pr_price,pr_discount from product 
+  		where pr_cg_name = #{cri.type} 
+  		order by pr_reg_date desc
+  		limit #{cri.pageStart}, #{cri.perPageNum}
+  </select>
+  <update id="updateProduct">
+  	update product set
+  		pr_name = #{product.pr_name},
+  		pr_img = #{product.pr_img},
+  		pr_price = #{product.pr_price},
+  		pr_gender = #{product.pr_gender},
+  		pr_discount = #{product.pr_discount},
+  		pr_desc = #{product.pr_desc},
+  		pr_cg_name = #{product.pr_cg_name}
+  	where pr_code = #{product.pr_code}
+  </update>
+  <update id="updateOption">
+  	update `option` set
+  		op_colnsize = #{option.op_colnsize},
+  		op_amount = #{option.op_amount}
+  	where op_num = #{option.op_num}
+  </update>
+  <select id="getCategory" resultType="kr.green.port.vo.CategoryVO">
+  	select * from category
+  </select>
+  <insert id="registerProduct" parameterType="kr.green.port.vo.ProductVO">
+  	insert into 
+  		product(pr_code, pr_name, pr_img, pr_price,
+  			pr_gender, pr_discount, pr_desc, pr_cg_name,pr_reg_date)
+  		values(#{product.pr_code}, #{product.pr_name}, #{product.pr_img}, #{product.pr_price},
+  			#{product.pr_gender}, #{product.pr_discount}, 
+  			#{product.pr_desc}, #{product.pr_cg_name},now())
+  </insert>
+  <insert id="insertOption" parameterType="kr.green.port.vo.OptionVO">
+  	insert into 
+  		`option`(op_colnsize, op_amount, op_pr_code)
+  		values(#{option.op_colnsize}, #{option.op_amount}, #{option.op_pr_code})
+  </insert>
+  <delete id="deleteProduct">
+  	delete from product where pr_code = #{pr_code}
+  </delete>
+  <select id="getTotalCount" resultType="int">
+  	select count(*) from product
+  	 where pr_cg_name = #{type}
+  </select>
+  <select id="getProductListNew" resultType="kr.green.port.vo.ProductVO">
+  	SELECT pr_code,pr_name,pr_img,pr_price,pr_discount FROM product 
+  		WHERE pr_reg_date BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH ) AND NOW()
+  		limit 10
+  </select>
+  <delete id="deleteOption">
+  	delete from `option` where op_num = #{op_num}
+  </delete>
+</mapper>

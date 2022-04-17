@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.green.port.dao.MemberDAO">
+  <select id="test" resultType="kr.green.port.vo.MemberVO">
+  	select * from member where me_id = #{id}
+  </select>
+  <select id="getMember" resultType="kr.green.port.vo.MemberVO">
+  	select * from member where me_id = #{me_id}
+  </select>
+  <insert id="insertMember">
+	 	insert into member(me_id, me_pw, me_name, me_gender, me_birth, 
+	 		me_address1, me_address2, me_address3, me_phone, me_email) 
+	 	values(#{user.me_id},#{user.me_pw},#{user.me_name},#{user.me_gender}
+	 	,#{user.me_birth},#{user.me_address1},#{user.me_address2},
+	 	#{user.me_address3},#{user.me_phone},#{user.me_email})
+  </insert>
+  <update id="updateMember">
+  	update member set
+  		me_pw = #{user.me_pw},
+  		me_name = #{user.me_name},
+  		me_gender = #{user.me_gender},
+  		me_birth = #{user.me_birth},
+  		me_address1 = #{user.me_address1},
+  		me_address2 = #{user.me_address2},
+  		me_address3 = #{user.me_address3},
+  		me_phone = #{user.me_phone}
+  		<if test="user.me_authority != null">
+  		,me_authority = #{user.me_authority}
+  		</if>
+  	where me_id = #{user.me_id}
+  </update>
+  <select id="findMember" resultType="kr.green.port.vo.MemberVO">
+  	select me_id from member 
+  		where me_email = #{user.me_email} and me_name = #{user.me_name}
+  		limit 1
+  </select>
+  <select id="selectMemeberList" resultType="kr.green.port.vo.MemberVO">
+  	select * from member where me_authority != '슈퍼 관리자'
+  </select>
+</mapper>

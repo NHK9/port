@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.green.port.dao.OrderDAO">
+  <insert id="insertCart" parameterType="kr.green.port.vo.CartVO">
+  	insert into 
+  		cart(ca_amount, ca_op_num, ca_me_id, ca_price)
+  		values(#{cart.ca_amount}, #{cart.ca_op_num}, #{cart.ca_me_id}, #{cart.ca_price})
+  </insert>
+  <select id="getCartList" resultType="kr.green.port.vo.ProductVO">
+ 	SELECT pr_code, op_num, pr_img, pr_name, op_colnsize, ca_amount, ca_price, ca_num
+ 	 FROM cart 
+		join `option` on op_num = ca_op_num
+    join product on op_pr_code = pr_code
+	where ca_me_id = #{id};
+  </select>
+  <select id="getCart" resultType="kr.green.port.vo.CartVO">
+ 	SELECT ca_op_num FROM cart 
+	where ca_me_id = #{id};
+  </select>
+  <delete id="deleteCart">
+  	delete from cart where ca_num = #{ca_num};
+  </delete>
+  <update id="modifyCart">
+  	update cart set
+  		ca_amount = ca_amount + #{cart.ca_amount},
+  		ca_price = ca_price + #{cart.ca_price}
+  	where ca_op_num = #{cart.ca_op_num};
+  </update>
+  <select id="getReward" resultType="int">
+  	select sum(rw_price) from reward
+  	where rw_me_id = #{id};
+  </select>
+  <select id="getHoldCoupon" resultType="kr.green.port.vo.HoldCouponVO">
+  	select * from holdcoupon
+  		join coupon on cp_num = hc_cp_num
+  	where hc_me_id = #{id} and hc_state = 'nu';
+  </select>
+  <insert id="registerOrder" useGeneratedKeys="true" 
+  	keyProperty="o.od_num" parameterType="kr.green.port.vo.OrderVO">
+  	<if test="o.od_hc_num != 0">
+	  	insert into 
+	  	`order`(od_pay, od_useRw, od_date, od_state, od_delivery, od_me_id, 
+	  	od_address1, od_address2, od_address3, od_delivery_msg, od_hc_num, od_name, od_phone, od_email, od_addRw)
+	  	values(#{o.od_pay},#{o.od_useRw}, now(), '입금대기',#{o.od_delivery},
+	  	#{o.od_me_id}, #{o.od_address1}, #{o.od_address2}, #{o.od_address3}, #{o.od_delivery_msg},
+	  	#{o.od_hc_num}, #{o.od_name}, #{o.od_phone}, #{o.od_email}, #{o.od_addRw})  	
+  	</if>
+  	<if test="o.od_hc_num == 0">
+	  	insert into 
+	  	`order`(od_pay, od_useRw, od_date, od_state, od_delivery, od_me_id, 
+	  	od_address1, od_address2, od_address3, od_delivery_msg, od_name, od_phone, od_email, od_addRw)
+	  	values(#{o.od_pay},#{o.od_useRw}, now(), '입금대기',#{o.od_delivery},
+	  	#{o.od_me_id}, #{o.od_address1}, #{o.od_address2}, #{o.od_address3}, #{o.od_delivery_msg},
+	  	#{o.od_name}, #{o.od_phone}, #{o.od_email}, #{o.od_addRw})  	
+  	</if>
+  </insert>
+  <insert id="registerOrderList" parameterType="kr.green.port.vo.OrderListVO">
+  	insert into
+  	orderlist(ol_od_num, ol_op_num, ol_amount, ol_price)
+  	values(#{list.ol_od_num},#{list.ol_op_num},#{list.ol_amount},#{list.ol_price})
+  </insert>
+  <select id="getOrderList" resultType="kr.green.port.vo.OrderVO">
+  	select a.pr_name, b.od_date, b.od_pay, b.od_num from `order` as b
+  		join orderlist as c on ol_od_num = od_num
+  		join `option` on op_num = ol_op_num
+  		join product as a on pr_code = op_pr_code
+  	where od_me_id = #{id} order by b.od_num desc;
+  </select>
+  <update id="updateRwCpGr">
+  <if test="hcNum != 0">
+  	update holdcoupon as c, member as m
+  		set c.hc_state = 'u',
+  				m.me_totalbuy = m.me_totalbuy + #{pay},
+  				m.me_rw = m.me_rw - #{useRw},
+  				m.me_gr_num = m.me_totalbuy,
+  				m.me_gr_num = case
+  					when 199999 > m.me_gr_num then 1
+						when 499999 > m.me_gr_num then 2
+						when 999999 > m.me_gr_num then 3
+						else 4
+						end
+  	where c.hc_num = #{hcNum}
+  		and c.hc_me_id=#{id}
+  		and m.me_id=#{id};
+  </if>
+	  <if test="hcNum == 0">
+	  	update member
+	  		set	me_rw = me_rw - #{useRw},
+	  			  me_totalbuy = me_totalbuy + #{pay},
+	  				me_gr_num = me_totalbuy,
+	  				me_gr_num = case
+	  					when 199999 > me_gr_num then 1
+							when 499999 > me_gr_num then 2
+							when 999999 > me_gr_num then 3
+							else 4
+							end
+	  	where me_id = #{id};
+	  </if>
+  </update>
+  <insert id="insertRw" parameterType="kr.green.port.vo.RewardVO">
+  	insert into
+  	reward(rw_price, rw_date, rw_me_id, rw_desc)
+  	values(#{addRw}, curdate(), #{id}, '구매적립금')
+  </insert>
+  <select id="getRewardList" resultType="kr.green.port.vo.RewardVO">
+  	select rw_price, rw_date, rw_desc from reward
+  	where rw_me_id = #{id} order by rw_date desc;
+  </select>
+  <select id="getCouponList" resultType="kr.green.port.vo.HoldCouponVO">
+  	select cp_discount, cp_name, hc_num, hc_state, hc_date from holdcoupon
+  		join coupon on cp_num = hc_cp_num
+  	where hc_me_id = #{id};
+  </select>
+</mapper>
