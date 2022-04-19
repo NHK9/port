@@ -42,4 +42,10 @@ public interface OrderDAO {
 	ArrayList<RewardVO> getRewardList(@Param("id")String me_id);
 
 	ArrayList<HoldCouponVO> getCouponList(@Param("id")String me_id);
+
+	ArrayList<OrderVO> getOrderListAll();
+
+	ArrayList<OrderVO> getOrderDetail(@Param("od_num")int od_num);
+
+	void modifyOrderState(@Param("num")Integer num,@Param("od_num")Integer od_num);
 }

@@ -58,7 +58,7 @@
 		      <a class="nav-link" href="<%=request.getContextPath()%>/product/list?type=acc">용품</a>
 		  </li>
 		  <li class="nav-item">
-		      <a class="nav-link" href="<%=request.getContextPath()%>/community">커뮤니티</a>
+		      <a class="nav-link" href="<%=request.getContextPath()%>/board/list?type=공지">커뮤니티</a>
 		      <div class="cate-box">
 		      	<a href="<%=request.getContextPath()%>/board/list?type=이벤트">이벤트</a>
 		      	<a href="<%=request.getContextPath()%>/board/list?type=공지">공지사항</a>
@@ -103,6 +103,7 @@
 		      	<a href="<%=request.getContextPath()%>/admin/member/list">회원관리</a>
 		      	<a href="<%=request.getContextPath()%>/admin/product/list">상품조회</a>
 		      	<a href="<%=request.getContextPath()%>/admin/product/register">상품등록</a>
+		      	<a href="<%=request.getContextPath()%>/admin/product/ordermanage">주문관리</a>
 		      </div>
 		    </li>
 	    </c:if>

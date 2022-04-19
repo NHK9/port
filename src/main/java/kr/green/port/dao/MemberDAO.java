@@ -16,4 +16,6 @@ public interface MemberDAO {
 	void updateMember(@Param("user")MemberVO input);
 
 	List<MemberVO> selectMemeberList();
+
+	MemberVO findMember(@Param("user")MemberVO member);
 }

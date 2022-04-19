@@ -1,6 +1,7 @@
 package kr.green.port.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import kr.green.port.vo.CartVO;
 import kr.green.port.vo.HoldCouponVO;
@@ -28,4 +29,10 @@ public interface OrderService {
 	ArrayList<RewardVO> getRewardList(String me_id);
 	
 	ArrayList<HoldCouponVO> getCouponList(String me_id);
+
+	ArrayList<OrderVO> getOrderListAll();
+
+	ArrayList<OrderVO> getOrderDetail(int od_num);
+
+	String modifyOrderState(Integer num, Integer od_num);
 }

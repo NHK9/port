@@ -15,10 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.green.port.service.AdminService;
+import kr.green.port.service.OrderService;
 import kr.green.port.service.ProductService;
 import kr.green.port.vo.CategoryVO;
 import kr.green.port.vo.MemberVO;
 import kr.green.port.vo.OptionList;
+import kr.green.port.vo.OrderVO;
 import kr.green.port.vo.ProductVO;
 
 @Controller
@@ -27,6 +29,8 @@ public class AdminController {
 	AdminService adminService;
 	@Autowired
 	ProductService productService;
+	@Autowired
+	OrderService orderService;
 	
 	@RequestMapping("/admin/member/list")
 	public ModelAndView adminMemberList(ModelAndView mv
@@ -114,5 +118,22 @@ public class AdminController {
 	@RequestMapping(value ="admin/option/deleted")
 	public String optionDelete(Integer op_num){
 	  return productService.deleteOption(op_num);
+	}
+	@RequestMapping(value="/admin/product/ordermanage", method=RequestMethod.GET)
+		public ModelAndView allOrderGet(ModelAndView mv,HttpServletRequest request){
+			MemberVO user = (MemberVO) request.getSession().getAttribute("user");
+			if(user == null || !user.getMe_authority().equals("슈퍼 관리자")) {
+				mv.setViewName("redirect:/");
+			}else {
+				ArrayList<OrderVO> list = orderService.getOrderListAll();
+				mv.addObject("list",list);
+			mv.setViewName("/admin/product/ordermanage");
+		}
+		return mv;
+	}
+	@ResponseBody
+	@RequestMapping(value ="admin/order/modify")
+	public String orderModify(Integer num, Integer od_num){
+	  return orderService.modifyOrderState(num,od_num);
 	}
 }

@@ -66,7 +66,7 @@
   		join orderlist as c on ol_od_num = od_num
   		join `option` on op_num = ol_op_num
   		join product as a on pr_code = op_pr_code
-  	where od_me_id = #{id} order by b.od_num desc;
+  	where od_me_id = #{id} group by od_num order by b.od_num desc;
   </select>
   <update id="updateRwCpGr">
   <if test="hcNum != 0">
@@ -113,4 +113,39 @@
   		join coupon on cp_num = hc_cp_num
   	where hc_me_id = #{id};
   </select>
+  <select id="getOrderListAll" resultType="kr.green.port.vo.OrderVO">
+  	select pr_name,od_num, od_pay, od_date, od_state, od_me_id from `order`
+  		join orderlist on od_num = ol_od_num
+  		join `option` on op_num = ol_op_num
+  		join product on op_pr_code = pr_code
+  	group by od_num order by od_num;
+  </select>
+  <select id="getOrderDetail" resultType="kr.green.port.vo.OrderVO">
+  	select pr_name,pr_img, od_num, od_pay, od_useRw, od_date, od_state, od_delivery,
+  	od_address1, od_address2, od_address3, od_delivery_msg, od_hc_num, od_name,
+  	 od_phone, od_email, od_addRw, op_colnsize, ol_amount, cp_discount from `order`
+  		join orderlist on od_num = ol_od_num
+  		join `option` on op_num = ol_op_num
+  		join product on op_pr_code = pr_code
+  		join holdcoupon on od_hc_num = hc_num
+  		join coupon on hc_cp_num = cp_num
+  	where od_num = #{od_num};
+  </select>
+  <update id="modifyOrderState">
+  	<if test="num == 1">
+  		update `order` 
+  		set od_state = '입금대기'
+  		where od_num = #{od_num}; 
+  	</if>
+  	<if test="num == 2">
+  		update `order` 
+  		set od_state = '입금완료'
+  		where od_num = #{od_num}; 
+  	</if>
+  	<if test="num == 3">
+  		update `order` 
+  		set od_state = '배송완료'
+  		where od_num = #{od_num}; 
+  	</if>
+  </update>
 </mapper>

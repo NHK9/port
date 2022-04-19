@@ -9,26 +9,23 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/css/default.css">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/jquery.validate.min.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/additional-methods.min.js"></script>
 </head>
 <body>
 	<div id="myOrder">
-		<h2 class="page-title">주문내역</h2>
+		<h2 class="page-title">주문관리</h2>
 		<div class="page-body">
 			<div class="my_menu">
 				<ul>
-					<li class="over"><a href="<%=request.getContextPath()%>/myorder">주문내역</a></li>
-					<li><a href="<%=request.getContextPath()%>/mycoupon">쿠폰내역</a></li>
-					<li><a href="<%=request.getContextPath()%>/myreward">적립금내역</a></li>
-					<li><a href="">상품리뷰</a></li>
-					<li><a href="<%=request.getContextPath()%>/mypage">회원정보</a></li>
+					<li class="over"><a href="<%=request.getContextPath()%>/admin/member/list">회원관리</a></li>
+					<li><a href="<%=request.getContextPath()%>/admin/product/register">상품등록</a></li>
+					<li><a href="<%=request.getContextPath()%>/admin/product/list">상품조회</a></li>
+					<li><a href="<%=request.getContextPath()%>/admin/product/ordermanage">주문관리</a></li>
 				</ul>
 			</div>
-			<p class="t-box-msg-tit">
-				<span>${user.me_name }</span>
-				님이 쇼핑몰에서 주문한 내역입니다.
-			</p>
 			<div class="tbl">
-				<table class="tbl_col" summary="주문번호, 주문일자, 상품명, 결제금액, 주문상세,배송현황">
+				<table class="tbl_col" summary="주문번호, 주문일자, 상품명, 결제금액, 주문상태,배송상태">
 					<colgroup>
 						<col width="95">
 						<col width="95">
@@ -52,10 +49,10 @@
 								<div class="tb-center">결제금액</div>
 							</th>
 							<th scope="row">
-								<div class="tb-center">주문상세</div>
+								<div class="tb-center">주문상태</div>
 							</th>
 							<th scope="row">
-								<div class="tb-center">배송현황</div>
+								<div class="tb-center">배송상태</div>
 							</th>
 						</tr>
 					</thead>
@@ -66,11 +63,14 @@
 								<td><div class="tb-center">${i.od_date }</div></td>
 								<td><div class="tb-center">${i.pr_name }</div></td>
 								<td><div class="tb-center">${i.od_pay }</div></td>
-								<td>
-									<div class="tb-center">
-										<a class="button05" href="<%=request.getContextPath()%>/order/detail?od_num=${i.od_num}">주문상세</a>
-									</div>
-								</td>
+								<td><div class="tb-center">
+									<input type="hidden" name="od_num" value="${i.od_num }">
+									<select class="sel">
+										<option value="1">${i.od_state }</option>
+										<option value="2">입금완료</option>
+										<option value="3">배송완료</option>
+									</select>
+								</div></td>
 								<td>
 									<div class="tb-center">
 										<a class="button05" href="">배송현황</a>
@@ -81,16 +81,26 @@
 					</tbody>
 				</table>
 			</div>
-			<ol class="paging">
-				<li>
-					
-				</li>
-			</ol>
-			<ul class="foot-dsc">
-				<li>- 상품명 또는 주문상세의 조회 버튼을 클릭하시면, 주문상세 내역을 확인하실 수 있습니다.</li>
-				<li>- 배송현황의 조회 버튼을 클릭하시면, 해당 주문의 배송 현황을 한눈에 확인하실 수 있습니다.</li>
-			</ul>
 		</div>
 	</div>
 </body>
+<script>
+	$('.sel').on('change',function(){
+		console.log('a');
+		var num = $(this).val();
+		var od_num = $(this).siblings('[name=od_num]').val();
+		$.ajax({
+			async:false,
+			type:'POST',
+			data: {num : num, od_num : od_num },
+			url:"<%=request.getContextPath()%>/admin/order/modify",
+			success : function(res){
+		    if(res == 'ok')
+		    	alert('변경 되었습니다');
+		    else
+		    	alert('실패');
+			}
+		})
+	});
+</script>
 </html>

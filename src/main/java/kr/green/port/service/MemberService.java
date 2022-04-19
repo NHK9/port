@@ -16,4 +16,8 @@ public interface MemberService {
 	MemberVO login(MemberVO member);
 
 	MemberVO updateMember(MemberVO input, MemberVO user);
+	
+	String findId(MemberVO member);
+
+	String findPw(MemberVO member);
 }

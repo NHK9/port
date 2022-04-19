@@ -63,17 +63,13 @@ public class OrderServiceImp implements OrderService{
 	public void registerOrder(OrderVO order, OrderList list, String me_id) {
 		order.setOd_me_id(me_id);
 		orderDao.registerOrder(order);
-		System.out.println("order OK");
 		for(OrderListVO tmp:list.getList()) {
 			tmp.setOl_od_num(order.getOd_num());
 			orderDao.registerOrderList(tmp);
 		}
-		System.out.println("orderlist OK");
 		System.out.println(order);
 		orderDao.updateRwCpGr(order.getOd_hc_num(),order.getOd_pay(),order.getOd_useRw(),me_id);
-		System.out.println("update OK");
 		orderDao.insertRw(order.getOd_addRw(),me_id);
-		System.out.println("reward OK");
 	}
 
 	@Override
@@ -89,5 +85,27 @@ public class OrderServiceImp implements OrderService{
 	@Override
 	public ArrayList<HoldCouponVO> getCouponList(String me_id) {
 		return orderDao.getCouponList(me_id);
+	}
+
+	@Override
+	public ArrayList<OrderVO> getOrderListAll() {
+		ArrayList<OrderVO> list = new ArrayList<OrderVO>();
+		list = orderDao.getOrderListAll();
+		System.out.println(list);
+		return orderDao.getOrderListAll();
+	}
+
+	@Override
+	public ArrayList<OrderVO> getOrderDetail(int od_num) {
+		return orderDao.getOrderDetail(od_num);
+	}
+
+	@Override
+	public String modifyOrderState(Integer num,Integer od_num) {
+		if(num < 1 || num == null || od_num < 1 || od_num == null) {
+			return "no";
+		}
+		orderDao.modifyOrderState(num,od_num);
+		return "ok";
 	}
 }

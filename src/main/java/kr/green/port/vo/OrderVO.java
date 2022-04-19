@@ -1,5 +1,6 @@
 package kr.green.port.vo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import lombok.Data;
@@ -24,5 +25,15 @@ public class OrderVO {
 	private int od_addRw;
 	
 	private String pr_name;
+	private String pr_img;
+	private int cp_discount;
+	private String op_colnsize;
+	private int ol_amount;
+	
+	public String getOd_reg_date_str() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String str = format.format(od_date);
+		return str;
+	}
 	
 }

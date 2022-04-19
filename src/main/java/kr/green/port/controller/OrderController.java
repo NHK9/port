@@ -18,7 +18,6 @@ import kr.green.port.vo.CartVO;
 import kr.green.port.vo.HoldCouponVO;
 import kr.green.port.vo.MemberVO;
 import kr.green.port.vo.OrderList;
-import kr.green.port.vo.OrderListVO;
 import kr.green.port.vo.OrderVO;
 import kr.green.port.vo.ProductVO;
 
@@ -95,6 +94,26 @@ public class OrderController {
 		MemberVO user = (MemberVO)request.getSession().getAttribute("user");
 		orderService.registerOrder(order,list,user.getMe_id());
 		mv.setViewName("redirect:/myorder");
+		return mv;
+	}
+	@RequestMapping(value="/order")
+	public ModelAndView allOrderGet(ModelAndView mv,HttpServletRequest request){
+		MemberVO user = (MemberVO) request.getSession().getAttribute("user");
+		if(user == null || !user.getMe_authority().equals("슈퍼 관리자")) {
+			mv.setViewName("redirect:/");
+		}else {
+			ArrayList<OrderVO> list = orderService.getOrderListAll();
+			mv.addObject("list",list);
+			mv.setViewName("/order");
+		}
+		return mv;
+	}
+	@RequestMapping(value="/detail", method=RequestMethod.GET)
+	public ModelAndView getOrderDetail(ModelAndView mv, int od_num) {
+		ArrayList<OrderVO> list = orderService.getOrderDetail(od_num);
+		System.out.println(list);
+		mv.addObject("list",list);
+		mv.setViewName("/order/detail");
 		return mv;
 	}
 }

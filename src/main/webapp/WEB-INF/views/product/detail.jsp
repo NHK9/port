@@ -13,9 +13,6 @@
 </style>
 </head>
 <body>
-	<div class=""></div>
-
-
 	<div class="line">
 	</div>			
 		<div class="content_top">
@@ -34,7 +31,7 @@
 				<div class="price">
 					<div class="discount_price">
 						판매가 : <span class="discount_price_number">${product.getPr_discount_price()}</span>
-						<span class="lt">${product.pr_price}</span>					
+						<span style="text-decoration: line-through; pont-size:12px; color:gray;">${product.pr_price}</span>					
 				</div>			
 				<div class="line">
 				</div>
@@ -51,7 +48,7 @@
 				<div class="added_option">
 				</div>
 				<div class="total">
-				<span>총 합계 :</span><span>원</span>
+				<span>총 합계 :</span><strong id="total"></strong><span>원</span>
 				</div>
 					<div class="button_set">
 						<button class="btn_cart" type="button">장바구니</button>
@@ -72,6 +69,7 @@
 		<div class="content_bottom">
 		</div>
 <script>
+	var tot = 0;
 	$('#choice').on('change',function(){
 		var val = $(this).val();
 		var dup = false;
@@ -107,17 +105,23 @@
 			'</span>';
 		
 		
-		$('.added_option').append(str);						
+		$('.added_option').append(str);	
+		tot += parseInt(price);
+		$('#total').text(tot);
 		}
 		
 		$(this).find('.default').prop("selected",true);
 		
 	})
 	$(document).on('click','.option-count',function(){
+		var total = 0;
 		var price = parseInt('${product.pr_discount_price}');
 		var count = parseInt($(this).val());
-		var total = price * count;
+		total = price * count;
 		$(this).siblings('.price').text(total);
+		
+		tot += parseInt(total);
+		$('#total').text(tot);
 	});
 	//장바구니
 	$(document).on('click','.btn_cart', function(){
@@ -140,7 +144,7 @@
 	      contentType:"application/json; charset=UTF-8",
 	      success : function(res){
 	        if(res == "true")
-	        	alert('장바구니에 추가되었습니다')
+	        	alert('장바구니에되었습니다')
 	        if(res == "login")
 	        	alert('login')
 	        if(res == "false")
@@ -152,6 +156,7 @@
 		
 	});
 	$(document).on('click','.btn-del-option', function(){
+		tot -= parseInt($(this).siblings('.price').text());
 		$(this).parent().remove();
 	});
 </script>

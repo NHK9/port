@@ -29,4 +29,8 @@
    <definition name="/*/*" extends=".root">      
       <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
     </definition>
+    <!-- (2) -->
+   <definition name="/*/*/*" extends=".root">      
+      <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
 </tiles-definitions>
