@@ -15,6 +15,7 @@
       <tr>
         <th>아이디</th>
         <th>이름</th>
+        <th>등급</th>
         <th>권한</th>
       </tr>
     </thead>
@@ -23,6 +24,7 @@
 	      <tr>
 	        <td class="id">${member.me_id}</td>
 	        <td class="name">${member.me_name}</td>
+	        <td class="">${member.me_gr_num}</td>
 	        <td>
 	        	<select class="authority">
 	        		<option <c:if test="${member.me_authority == '회원' }">selected</c:if> >회원</option>

@@ -67,7 +67,6 @@ public class OrderServiceImp implements OrderService{
 			tmp.setOl_od_num(order.getOd_num());
 			orderDao.registerOrderList(tmp);
 		}
-		System.out.println(order);
 		orderDao.updateRwCpGr(order.getOd_hc_num(),order.getOd_pay(),order.getOd_useRw(),me_id);
 		orderDao.insertRw(order.getOd_addRw(),me_id);
 	}

@@ -23,6 +23,7 @@ public class OrderVO {
 	private String od_phone;
 	private String od_email;
 	private int od_addRw;
+	private int od_total;
 	
 	private String pr_name;
 	private String pr_img;
@@ -35,5 +36,4 @@ public class OrderVO {
 		String str = format.format(od_date);
 		return str;
 	}
-	
 }

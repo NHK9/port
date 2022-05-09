@@ -88,7 +88,7 @@
 			<hr>
 			<h5>금액 확인</h5>
 			<div class="total_price">
-				<span>상품 합계 : </span><input id="pr_total" value="0" style="border:none" readonly> <span>원</span><hr>
+				<span>상품 합계 : </span><input id="pr_total" name="od_total" value="0" style="border:none" readonly> <span>원</span><hr>
 			  <span>배송비 : </span><input name="od_delivery" class="delivery" value="0" style="border:none" readonly> <span>원</span><hr>
 			  <input type="hidden" value="${user.me_gr_num }" id="gr_num">
 			  <span>적립금 : </span><input id="addRw" name="od_addRw" style="border:none" value="0" readonly><span>원</span> <hr>

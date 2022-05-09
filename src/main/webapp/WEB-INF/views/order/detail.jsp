@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,7 +79,7 @@
 				<span>적립금 사용: </span>
 				<input type="number" value="${list[0].od_useRw }" readonly>
 				 <hr>
-				<span>쿠폰 사용: </span> <input type="number" value="${list[0].cp_discount }" readonly/> 
+				<span>쿠폰 할인 금액: </span> <fmt:parseNumber value="${list[0].od_total * list[0].cp_discount /100}"/>
 			</div>
 			<hr>
 			<h5>금액 확인</h5>

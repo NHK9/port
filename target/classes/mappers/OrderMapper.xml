@@ -74,7 +74,7 @@
   		set c.hc_state = 'u',
   				m.me_totalbuy = m.me_totalbuy + #{pay},
   				m.me_rw = m.me_rw - #{useRw},
-  				m.me_gr_num = m.me_totalbuy,
+  				m.me_gr_num = m.me_totalbuy + #{pay},
   				m.me_gr_num = case
   					when 199999 > m.me_gr_num then 1
 						when 499999 > m.me_gr_num then 2
@@ -89,7 +89,7 @@
 	  	update member
 	  		set	me_rw = me_rw - #{useRw},
 	  			  me_totalbuy = me_totalbuy + #{pay},
-	  				me_gr_num = me_totalbuy,
+	  				me_gr_num = me_totalbuy + #{pay},
 	  				me_gr_num = case
 	  					when 199999 > me_gr_num then 1
 							when 499999 > me_gr_num then 2
@@ -121,14 +121,14 @@
   	group by od_num order by od_num;
   </select>
   <select id="getOrderDetail" resultType="kr.green.port.vo.OrderVO">
-  	select pr_name,pr_img, od_num, od_pay, od_useRw, od_date, od_state, od_delivery,
-  	od_address1, od_address2, od_address3, od_delivery_msg, od_hc_num, od_name,
-  	 od_phone, od_email, od_addRw, op_colnsize, ol_amount, cp_discount from `order`
-  		join orderlist on od_num = ol_od_num
-  		join `option` on op_num = ol_op_num
-  		join product on op_pr_code = pr_code
-  		join holdcoupon on od_hc_num = hc_num
-  		join coupon on hc_cp_num = cp_num
+  	select od_num, od_pay, od_useRw, od_date, od_state, od_delivery,
+  		od_address1, od_address2, od_address3, od_delivery_msg, od_hc_num, od_name,
+  		od_phone, od_email, od_addRw, od_total, ol_amount, op_colnsize, pr_name, pr_img, cp_discount from `order`
+	    join orderlist on od_num = ol_od_num
+	    join `option` on op_num = ol_op_num
+	    join product on pr_code = op_pr_code
+	    join holdcoupon on hc_num = od_hc_num
+	    join coupon on cp_num = hc_cp_num
   	where od_num = #{od_num};
   </select>
   <update id="modifyOrderState">

@@ -87,7 +87,7 @@
 		    <li class="nav-item">
 		      <a class="nav-link" href="<%=request.getContextPath()%>/mypage">MY</a>
 		      <div class="cate-box">
-		      	<a href="">회원정보</a>
+		      	<a href="<%=request.getContextPath()%>/mypage">회원정보</a>
 		      	<a href="<%=request.getContextPath()%>/myorder">주문내역</a>
 		      	<a href="<%=request.getContextPath()%>/mycoupon">쿠폰내역</a>
 		      	<a href="<%=request.getContextPath()%>/myreward">적립금내역</a>
