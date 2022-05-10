@@ -114,13 +114,17 @@
 		
 	})
 	$(document).on('click','.option-count',function(){
-		var total = 0;
-		var price = parseInt('${product.pr_discount_price}');
-		var count = parseInt($(this).val());
-		total = price * count;
-		$(this).siblings('.price').text(total);
+		tot = 0;
+		$('.option-count').each(function(){
+			var total = 0;
+			var price = parseInt('${product.pr_discount_price}');
+			var count = parseInt($(this).val());
+			total = price * count;
+			$(this).siblings('.price').text(total);
+			
+			tot += parseInt(total);
+		})
 		
-		tot += parseInt(total);
 		$('#total').text(tot);
 	});
 	//장바구니
@@ -129,7 +133,6 @@
 			var ca_amount = $(this).children('.option-count').val();
 			var ca_op_num = $(this).children('.op_num').val();
 			var ca_price = $(this).children('.price').text();
-			console.log(ca_price)
 			var cart = {
 					ca_amount : ca_amount,
 					ca_op_num : ca_op_num,
@@ -144,7 +147,7 @@
 	      contentType:"application/json; charset=UTF-8",
 	      success : function(res){
 	        if(res == "true")
-	        	alert('장바구니에되었습니다')
+	        	alert('장바구니에 추가 되었습니다')
 	        if(res == "login")
 	        	alert('login')
 	        if(res == "false")
@@ -158,6 +161,7 @@
 	$(document).on('click','.btn-del-option', function(){
 		tot -= parseInt($(this).siblings('.price').text());
 		$(this).parent().remove();
+		$('#total').text(tot);
 	});
 </script>
 </body>
