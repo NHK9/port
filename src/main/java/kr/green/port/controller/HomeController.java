@@ -190,4 +190,19 @@ public class HomeController {
 		
 		return memberService.findPw(member);
 	}
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public ModelAndView searchProduct(ModelAndView mv,Criteria cri, String search) {
+		//페이지메이커를 만들어서 화면에 전달해야함
+		cri.setPerPageNum(10);
+		cri.setSearch(search);
+		int totalCount = productService.getTotalCountBySearch(cri);
+		PageMaker pm = new PageMaker(totalCount, 10, cri);
+		mv.addObject("pm",pm);
+		ArrayList<ProductVO> list = productService.getProductListBySearch(cri);
+		mv.addObject("totalCount",totalCount);
+		mv.addObject("list", list);
+		mv.addObject("search",search);
+		mv.setViewName("/product/list");
+		return mv;
+	}
 }

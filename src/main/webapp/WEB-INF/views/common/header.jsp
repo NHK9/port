@@ -62,12 +62,14 @@
 		      <div class="cate-box">
 		      	<a href="<%=request.getContextPath()%>/board/list?type=이벤트">이벤트</a>
 		      	<a href="<%=request.getContextPath()%>/board/list?type=공지">공지사항</a>
-		      	<a href="<%=request.getContextPath()%>/board/list?type=고객센터">고객센터</a>
 		      	<a href="<%=request.getContextPath()%>/board/list">리뷰</a>
 		      </div>
 		  </li>
 	    <li class="nav-item">
-	      <a class="nav-link" href="<%=request.getContextPath()%>/order/cart">검색</a>
+	      <a class="nav-link">검색</a>
+	      <form class="cate-box"  style="width:300px" action="<%=request.getContextPath() %>/search" method="get">
+	      	<input type="text" name="search"><button type="submit">검색</button>
+	      </form>
 	    </li>
 	    <li class="nav-item">
 	      <a class="nav-link" href="<%=request.getContextPath()%>/order/cart">장바구니</a>
@@ -110,5 +112,15 @@
 	    </c:if>
 	  </ul>
 	</nav>
+	<script>
+		$('form').submit(function(){
+			var word = $('[name=search]').val().length;
+			console.log(word);
+			if(word < 2){
+				alert('검색어는 2글자 이상이어야 합니다.')
+				return false;
+			}
+		})
+	</script>
 </body>
 </html>

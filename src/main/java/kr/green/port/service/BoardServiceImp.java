@@ -23,10 +23,7 @@ public class BoardServiceImp implements BoardService {
 	@Autowired
 	BoardDAO boardDao;
 	//업로드할 폴더 경로. 환경에 따라 바꿔줘야함.
-	//집
 	String uploadPath = "D:\\JAVA_KNH\\upload";
-	//학원
-	//String uploadPath = "D:\\JAVA_JIK\\upload";
 
 	@Override
 	public void registerBoard(BoardVO board, List<MultipartFile> files) throws Exception {

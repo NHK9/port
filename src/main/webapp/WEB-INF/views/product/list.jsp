@@ -15,6 +15,12 @@
 	<div class="content">
 		<div class="main_box">
 					<h2>${type}</h2>
+					<c:if test="${totalCount == 0 && search != null}">
+						<h2 style="position:unset">${search }</h2><h3 style="display:block">검색 결과가 없습니다.</h3>
+					</c:if>
+					<c:if test="${totalCount != 0 && search != null}">
+						<h2 style="position:unset">${search }</h2><h3 style="display:block">검색 결과 입니다.</h3>
+					</c:if>
 		</div>
 		<div class="prdBrand">
 			<div class="item-wrap">

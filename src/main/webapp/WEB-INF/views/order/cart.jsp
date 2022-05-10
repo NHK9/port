@@ -68,7 +68,7 @@
 										${user.me_name }님은 구매시, 구매금액의
 										<span class="rw"></span>를 추가 적립해 드립니다. 
 										</li>
-										<li>실결제 금액 5만원 이상 구매시 무료배송이 적용됩니다.</li>
+										<li>3만원 이상 구매시 무료배송이 적용됩니다.</li>
 									</ul>
 								</div>
 							</td>
@@ -154,20 +154,20 @@
 	</form>
 	<script>
 		$(document).ready(function(){
-			console.log($('#grade').val())
-			if($('#grade').val() == '1'){
+			console.log($('[name=grade]').val())
+			if($('[name=grade]').val() == '1'){
 				$('.grade').text('[FRIEND]');
 				$('.rw').text('1%');				
 			}
-			if($('#grade').val() == '2'){
+			if($('[name=grade]').val() == '2'){
 				$('.grade').text('[FAMILY]');
 				$('.rw').text('2%');				
 			}
-			if($('#grade').val() == '3'){
+			if($('[name=grade]').val() == '3'){
 				$('.grade').text('[PREMIUM]');
 				$('.rw').text('3%');				
 			}
-			if($('#grade').val() == '4'){
+			if($('[name=grade]').val() == '4'){
 				$('.grade').text('[VIP]');
 				$('.rw').text('5%');				
 			}

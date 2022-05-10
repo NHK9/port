@@ -18,10 +18,10 @@
 		<div class="page-body">
 			<div class="my_menu">
 				<ul>
-					<li class="over"><a href="<%=request.getContextPath()%>/admin/member/list">회원관리</a></li>
+					<li><a href="<%=request.getContextPath()%>/admin/member/list">회원관리</a></li>
 					<li><a href="<%=request.getContextPath()%>/admin/product/register">상품등록</a></li>
 					<li><a href="<%=request.getContextPath()%>/admin/product/list">상품조회</a></li>
-					<li><a href="<%=request.getContextPath()%>/admin/product/ordermanage">주문관리</a></li>
+					<li class="over"><a href="<%=request.getContextPath()%>/admin/product/ordermanage">주문관리</a></li>
 				</ul>
 			</div>
 			<div class="tbl">

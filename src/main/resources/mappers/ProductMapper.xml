@@ -72,4 +72,14 @@
   <delete id="deleteCoupon">
   	delete from coupon where cp_num = #{cp_num};
   </delete>
+  <select id="getProductListBySearch" resultType="kr.green.port.vo.ProductVO">
+  	select pr_code,pr_name,pr_img,pr_price,pr_discount FROM product
+  		where pr_name  like concat('%',#{cri.search},'%')
+  		order by pr_reg_date desc
+  		limit 1, 10;
+  </select>
+  <select id="getTotalCountBySearch" resultType="int">
+  	select count(*) from product 
+  		where pr_name like concat('%',#{cri.search},'%');
+  </select>
 </mapper>

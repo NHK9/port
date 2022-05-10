@@ -34,4 +34,8 @@ public interface ProductService {
 	String deleteOption(Integer op_num);
 
 	boolean deleteCoupon(int cp_num);
+
+	int getTotalCountBySearch(Criteria cri);
+
+	ArrayList<ProductVO> getProductListBySearch(Criteria cri);
 }

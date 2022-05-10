@@ -147,4 +147,14 @@ public class ProductServiceImp implements ProductService{
 		productDao.deleteCoupon(cp_num);
 		return true;
 	}
+
+	@Override
+	public int getTotalCountBySearch(Criteria cri) {
+		return productDao.getTotalCountBySearch(cri);
+	}
+
+	@Override
+	public ArrayList<ProductVO> getProductListBySearch(Criteria cri) {
+		return productDao.getProductListBySearch(cri);
+	}
 }

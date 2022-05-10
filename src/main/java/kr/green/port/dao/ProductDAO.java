@@ -47,4 +47,8 @@ public interface ProductDAO {
 	ArrayList<CouponVO> getCouponList();
 
 	void deleteCoupon(@Param("cp_num")int cp_num);
+
+	ArrayList<ProductVO> getProductListBySearch(@Param("cri")Criteria cri);
+
+	int getTotalCountBySearch(@Param("cri")Criteria cri);
 }
