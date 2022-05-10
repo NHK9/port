@@ -35,4 +35,6 @@ public interface OrderService {
 	ArrayList<OrderVO> getOrderDetail(int od_num);
 
 	String modifyOrderState(Integer num, Integer od_num);
+
+	void cancelOrder(int od_num, int pay, int useRw, int hc_num, String me_id);
 }

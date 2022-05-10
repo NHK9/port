@@ -30,7 +30,7 @@
 	}
 </style>
 <body>
-		<form class="container find body" method="post" action="<%=request.getContextPath()%>/order/orderBuy">
+		<form class="container find body" method="post" action="<%=request.getContextPath()%>/order/cancel">
 			<h1 style="text-align: center; margin: 50px 0;">주문 상세</h1>
 			<table class="table table-hover">
 				<thead>
@@ -59,7 +59,7 @@
 			<div class="memeber_info">
 				<span>이름 : </span> <span>${user.me_name }</span> <hr>
 				<span>연락처 : </span> <span>${user.me_phone }</span><hr>
-				<span>이메일 : </span> <input type="text" name="od_email" value="${user.me_email }"> <hr>
+				<span>이메일 : </span> <input type="text" value="${user.me_email }"> <hr>
 			</div>
 			<hr>
 			<h5>배송 정보</h5>
@@ -77,18 +77,20 @@
 			<h5>할인 정보</h5>
 			<div class="discount_info">
 				<span>적립금 사용: </span>
-				<input type="number" value="${list[0].od_useRw }" readonly>
+				<input type="number" name="useRw" value="${list[0].od_useRw }" readonly>
 				 <hr>
 				<span>쿠폰 할인 금액: </span> <fmt:parseNumber value="${list[0].od_total * list[0].cp_discount /100}"/>
+				<input type="hidden" name="hc_num" value="${list[0].od_hc_num }">
 			</div>
 			<hr>
 			<h5>금액 확인</h5>
 			<div class="total_price">
 			  <span>배송비 : </span><input value="${list[0].od_delivery }" style="border:none" readonly> <span>원</span><hr>
 			  <span>적립금 : </span><input value="${list[0].od_addRw }" style="border:none" value="0" readonly><span>원</span> <hr>
-				<span>최종 결제금액 : </span><input type="number" value="${list[0].od_pay }" style="border:none" readonly><span>원</span> <hr>
+				<span>최종 결제금액 : </span><input type="number" name="pay" value="${list[0].od_pay }" style="border:none" readonly><span>원</span> <hr>
 			</div>
-			<button>쇼핑하기</button> <button type="button" >취소하기</button>
+			<input type="hidden" name="od_num" value="${list[0].od_num }">
+			<button type="button">쇼핑하기</button> <button type="submit" >취소하기</button>
 		</form>
 	</body>
 </html>

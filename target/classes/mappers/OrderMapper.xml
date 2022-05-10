@@ -42,18 +42,18 @@
   	<if test="o.od_hc_num != 0">
 	  	insert into 
 	  	`order`(od_pay, od_useRw, od_date, od_state, od_delivery, od_me_id, 
-	  	od_address1, od_address2, od_address3, od_delivery_msg, od_hc_num, od_name, od_phone, od_email, od_addRw)
+	  	od_address1, od_address2, od_address3, od_delivery_msg, od_hc_num, od_name, od_phone, od_email, od_addRw, od_total)
 	  	values(#{o.od_pay},#{o.od_useRw}, now(), '입금대기',#{o.od_delivery},
 	  	#{o.od_me_id}, #{o.od_address1}, #{o.od_address2}, #{o.od_address3}, #{o.od_delivery_msg},
-	  	#{o.od_hc_num}, #{o.od_name}, #{o.od_phone}, #{o.od_email}, #{o.od_addRw})  	
+	  	#{o.od_hc_num}, #{o.od_name}, #{o.od_phone}, #{o.od_email}, #{o.od_addRw}, #{o.od_total})  	
   	</if>
   	<if test="o.od_hc_num == 0">
 	  	insert into 
 	  	`order`(od_pay, od_useRw, od_date, od_state, od_delivery, od_me_id, 
-	  	od_address1, od_address2, od_address3, od_delivery_msg, od_name, od_phone, od_email, od_addRw)
+	  	od_address1, od_address2, od_address3, od_delivery_msg, od_name, od_phone, od_email, od_addRw, od_total)
 	  	values(#{o.od_pay},#{o.od_useRw}, now(), '입금대기',#{o.od_delivery},
 	  	#{o.od_me_id}, #{o.od_address1}, #{o.od_address2}, #{o.od_address3}, #{o.od_delivery_msg},
-	  	#{o.od_name}, #{o.od_phone}, #{o.od_email}, #{o.od_addRw})  	
+	  	#{o.od_name}, #{o.od_phone}, #{o.od_email}, #{o.od_addRw}, #{o.od_total})  	
   	</if>
   </insert>
   <insert id="registerOrderList" parameterType="kr.green.port.vo.OrderListVO">
@@ -127,8 +127,8 @@
 	    join orderlist on od_num = ol_od_num
 	    join `option` on op_num = ol_op_num
 	    join product on pr_code = op_pr_code
-	    join holdcoupon on hc_num = od_hc_num
-	    join coupon on cp_num = hc_cp_num
+	    left outer join holdcoupon on hc_num = od_hc_num
+	    left outer join coupon on cp_num = hc_cp_num
   	where od_num = #{od_num};
   </select>
   <update id="modifyOrderState">
@@ -147,5 +147,39 @@
   		set od_state = '배송완료'
   		where od_num = #{od_num}; 
   	</if>
+  </update>
+  <delete id="cancelOrder">
+  	delete from `order` where od_num = #{od_num};
+  </delete>
+  <update id="rollbackRwCpGr">
+  <if test="hcNum != 0">
+  	update holdcoupon as c, member as m
+  		set c.hc_state = 'nu',
+  				m.me_totalbuy = m.me_totalbuy - #{pay},
+  				m.me_rw = m.me_rw + #{useRw},
+  				m.me_gr_num = m.me_totalbuy - #{pay},
+  				m.me_gr_num = case
+  					when 199999 > m.me_gr_num then 1
+						when 499999 > m.me_gr_num then 2
+						when 999999 > m.me_gr_num then 3
+						else 4
+						end
+  	where c.hc_num = #{hcNum}
+  		and c.hc_me_id=#{id}
+  		and m.me_id=#{id};
+  </if>
+	  <if test="hcNum == 0">
+	  	update member
+	  		set	me_rw = me_rw + #{useRw},
+	  			  me_totalbuy = me_totalbuy - #{pay},
+	  				me_gr_num = me_totalbuy - #{pay},
+	  				me_gr_num = case
+	  					when 199999 > me_gr_num then 1
+							when 499999 > me_gr_num then 2
+							when 999999 > me_gr_num then 3
+							else 4
+							end
+	  	where me_id = #{id};
+	  </if>
   </update>
 </mapper>

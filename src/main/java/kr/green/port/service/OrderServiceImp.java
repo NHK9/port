@@ -107,4 +107,12 @@ public class OrderServiceImp implements OrderService{
 		orderDao.modifyOrderState(num,od_num);
 		return "ok";
 	}
+
+	@Override
+	public void cancelOrder(int od_num, int pay, int useRw, int hc_num, String me_id) {
+		orderDao.rollbackRwCpGr(od_num,pay,useRw,hc_num,me_id);
+
+		orderDao.cancelOrder(od_num);
+		
+	}
 }

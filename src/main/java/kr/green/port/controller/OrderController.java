@@ -116,4 +116,22 @@ public class OrderController {
 		mv.setViewName("/order/detail");
 		return mv;
 	}
+	
+	@RequestMapping(value = "/cancel", method=RequestMethod.POST)
+	public ModelAndView orderCancel(ModelAndView mv, int od_num, int pay, int useRw, int hc_num, HttpServletRequest request) {
+		MemberVO user = (MemberVO)request.getSession().getAttribute("user");
+		if(user == null) {
+			mv.setViewName("redirect:/login");
+			return mv;
+		}else {
+			System.out.println(od_num);
+			System.out.println(pay);
+			System.out.println(useRw);
+			System.out.println(hc_num);
+			System.out.println(user.getMe_id());
+			orderService.cancelOrder(od_num,pay,useRw,hc_num,user.getMe_id());
+			mv.setViewName("redirect:/myorder");
+			return mv;
+		}
+	}
 }

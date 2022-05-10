@@ -48,4 +48,8 @@ public interface OrderDAO {
 	ArrayList<OrderVO> getOrderDetail(@Param("od_num")int od_num);
 
 	void modifyOrderState(@Param("num")Integer num,@Param("od_num")Integer od_num);
+
+	void cancelOrder(@Param("od_num")int od_num);
+
+	void rollbackRwCpGr(@Param("od_num")int od_num, @Param("pay")int pay, @Param("useRw")int useRw, @Param("hcNum")int hc_num, @Param("id")String me_id);
 }

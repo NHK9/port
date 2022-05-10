@@ -124,8 +124,7 @@
 	$('#available_rw').text(rw);
 	//상품합계계산
 	$('.price').each(function(){
-		prTotal += parseInt($(this).val
-				());
+		prTotal += parseInt($(this).val());
 	});
 
 	//상품합계
