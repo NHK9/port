@@ -18,6 +18,7 @@ import kr.green.port.service.AdminService;
 import kr.green.port.service.OrderService;
 import kr.green.port.service.ProductService;
 import kr.green.port.vo.CategoryVO;
+import kr.green.port.vo.CouponVO;
 import kr.green.port.vo.MemberVO;
 import kr.green.port.vo.OptionList;
 import kr.green.port.vo.OrderVO;
@@ -135,5 +136,62 @@ public class AdminController {
 	@RequestMapping(value ="admin/order/modify")
 	public String orderModify(Integer num, Integer od_num){
 	  return orderService.modifyOrderState(num,od_num);
+	}
+	
+	@RequestMapping(value="admin/member/coupon")
+	public ModelAndView couponManage(ModelAndView mv, HttpServletRequest request) {
+		MemberVO user = (MemberVO) request.getSession().getAttribute("user");
+		if(user == null || !user.getMe_authority().equals("슈퍼 관리자")) {
+			mv.setViewName("redirect:/");
+		}else {
+			ArrayList<CouponVO> list = adminService.getCouponList();
+			mv.addObject("list",list);
+			mv.setViewName("/admin/member/coupon");
+		}
+		return mv;
+	}
+	@ResponseBody
+	@RequestMapping(value="admin/coupon/deleted")
+	public String couponDelete(int cp_num){
+		if(productService.deleteCoupon(cp_num))
+			return "ok";	
+		return "no";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="admin/coupon/issue")
+	public String couponIssue(int cp_num,int cases){
+		if(adminService.issueCoupon(cp_num,cases))
+			return "ok";	
+		return "no";
+	}
+	@RequestMapping(value = "/admin/member/cpRegister", method=RequestMethod.GET)
+	public ModelAndView RegisterCouponGet(ModelAndView mv, HttpServletRequest request) {
+		MemberVO user = (MemberVO) request.getSession().getAttribute("user");
+		if(user == null || !user.getMe_authority().equals("슈퍼 관리자")) {
+			mv.setViewName("redirect:/");
+		}else {
+			mv.setViewName("/admin/member/cpRegister");
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/admin/member/cpRegister", method=RequestMethod.POST)
+	public ModelAndView RegisterCouponPost(ModelAndView mv,String cp_name, String cp_code, int cp_discount) {
+		adminService.registerCp(cp_name,cp_code,cp_discount);
+		ArrayList<CouponVO> list = adminService.getCouponList();
+		mv.addObject("list",list);
+		mv.setViewName("/admin/member/coupon");
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/admin/codeCheck")
+	public String codeCheck(String code) {
+		if(adminService.codeCheck(code)) {
+			return "ok";
+		}
+		return "no";
 	}
 }

@@ -141,4 +141,10 @@ public class ProductServiceImp implements ProductService{
 		productDao.deleteOption(op_num);
 		return "ok";
 	}
+
+	@Override
+	public boolean deleteCoupon(int cp_num) {
+		productDao.deleteCoupon(cp_num);
+		return true;
+	}
 }

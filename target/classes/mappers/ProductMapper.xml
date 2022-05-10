@@ -66,4 +66,10 @@
   <delete id="deleteOption">
   	delete from `option` where op_num = #{op_num}
   </delete>
+  <select id="getCouponList" resultType="kr.green.port.vo.CouponVO">
+  	select cp_name, cp_discount,cp_num from coupon;
+  </select>
+  <delete id="deleteCoupon">
+  	delete from coupon where cp_num = #{cp_num};
+  </delete>
 </mapper>

@@ -39,4 +39,18 @@
   <select id="selectMemeberList" resultType="kr.green.port.vo.MemberVO">
   	select * from member where me_authority != '슈퍼 관리자'
   </select>
+  <select id="getMemberIdAll" resultType="String">
+  	select me_id from member;
+  </select>
+  <insert id="issueCoupon" parameterType="kr.green.port.vo.HoldCouponVO">
+  	insert into holdcoupon(hc_state,hc_cp_num,hc_me_id,hc_date)
+  	 values('nu',#{cp_num},#{id},now())
+  </insert>
+  <insert id="registerCp" parameterType="kr.green.port.vo.CouponVO">
+  	insert into coupon (cp_code,cp_date,cp_discount,cp_name)
+  		values(#{cp_code},now(),#{cp_discount},#{cp_name})
+  </insert>
+  <select id="codeCheck" resultType="kr.green.port.vo.CouponVO">
+  	select * from coupon where cp_code = #{code};
+  </select>
 </mapper>

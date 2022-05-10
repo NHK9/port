@@ -104,6 +104,7 @@
 		      	<a href="<%=request.getContextPath()%>/admin/product/list">상품조회</a>
 		      	<a href="<%=request.getContextPath()%>/admin/product/register">상품등록</a>
 		      	<a href="<%=request.getContextPath()%>/admin/product/ordermanage">주문관리</a>
+		      	<a href="<%=request.getContextPath()%>/admin/member/coupon">쿠폰관리</a>
 		      </div>
 		    </li>
 	    </c:if>

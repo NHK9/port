@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.green.port.pagination.Criteria;
 import kr.green.port.vo.CartVO;
 import kr.green.port.vo.CategoryVO;
+import kr.green.port.vo.CouponVO;
 import kr.green.port.vo.FileVO;
 import kr.green.port.vo.OptionList;
 import kr.green.port.vo.OptionVO;
@@ -42,4 +43,8 @@ public interface ProductDAO {
 	void deleteOption(@Param("op_num")Integer op_num);
 
 	ArrayList<CartVO> getCart(@Param("id")String id);
+
+	ArrayList<CouponVO> getCouponList();
+
+	void deleteCoupon(@Param("cp_num")int cp_num);
 }

@@ -32,4 +32,6 @@ public interface ProductService {
 	int getTotalCount(String type);
 
 	String deleteOption(Integer op_num);
+
+	boolean deleteCoupon(int cp_num);
 }
